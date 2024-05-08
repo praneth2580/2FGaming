@@ -1,4 +1,4 @@
-class Sprite {
+class Player {
   constructor(context, position, velocity) {
     this.context = context;
     this.position = position;
@@ -7,13 +7,12 @@ class Sprite {
       height: 200,
     };
     this.velocity = velocity;
-    this.hasGravity = true;
-    this.checkGrounded();
+    this.isJumping = false;
   }
 
   checkGrounded() {
     this.isGrounded =
-      this.position.y + this.size.height >= window.config.canvas_height;
+      this.position.y + this.size.height >= config.canvas_height;
   }
 
   draw() {
@@ -25,8 +24,8 @@ class Sprite {
       this.size.height
     );
     this.context.beginPath();
-    this.context.moveTo(this.position.x, this.position.y + this.size.height);
-    this.context.lineTo(this.position.x + this.size.width, this.position.y + this.size.height);
+    this.context.moveTo(this.position.x, (this.position.y + this.size.height) - 5);
+    this.context.lineTo(this.position.x + this.size.width, (this.position.y + this.size.height) - 5);
     this.context.strokeStyle = 'blue';
     this.context.lineWidth = 10;
     this.context.stroke();
@@ -34,12 +33,13 @@ class Sprite {
 
   update() {
     if (!this.isGrounded) {
-        this.velocity.y += window.config.gravity;
+      this.velocity.y += config.gravity;
+    } else if (!this.isJumping) {
+      this.velocity.y = 0;
     }
-    // if ((this.position.y + this.size.height) > window.config.canvas_height) this.velocity.y = ((this.position.y + this.size.height) - window.config.canvas_height) * -.5;
-    if ((this.position.y + this.size.height) > window.config.canvas_height) this.position.y = window.config.canvas_height - this.size.height - 50;
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
+    // if (runOnFrame(current_frame,5)) this.checkGrounded();
     this.checkGrounded();
     this.draw();
   }

@@ -1,14 +1,14 @@
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
 
-const listen_keys = Object.keys(window.config.keys);
+const listen_keys = Object.keys(config.keys);
 
-canvas.width = window.config.canvas_width;
-canvas.height = window.config.canvas_height;
+canvas.width = config.canvas_width;
+canvas.height = config.canvas_height;
 
 context.fillRect(0, 0, canvas.width, canvas.height);
 
-const player = new Sprite(
+const player = new Player(
   context,
   {
     x: 0,
@@ -20,7 +20,7 @@ const player = new Sprite(
   }
 );
 
-const enemy = new Sprite(
+const enemy = new Player(
   context,
   {
     x: 100,
@@ -37,38 +37,37 @@ player_collider.bindPlayer(player, 'right');
 
 window.addEventListener("keyup", (event) => {
   const key = event.key.toLowerCase();
-  if (listen_keys.includes(key)) window.config.keys[key].pressed = false;
+  if (listen_keys.includes(key)) config.keys[key].pressed = false;
 });
 
 window.addEventListener("keydown", (event) => {
   const key = event.key.toLowerCase();
-  if (listen_keys.includes(key)) window.config.keys[key].pressed = true;
+  if (listen_keys.includes(key)) config.keys[key].pressed = true;
 });
 
 
 function animate() {
   window.requestAnimationFrame(animate);
+  current_frame++
   context.clearRect(0, 0, canvas.width, canvas.height);
-  if (window.config.keys["a"].pressed && player.isGrounded) {
+  if (config.keys["a"].pressed && (player.isGrounded || player.isJumping)) {
     player.velocity.x = -10;
-  } else if (window.config.keys["d"].pressed && player.isGrounded) {
+  } else if (config.keys["d"].pressed && (player.isGrounded || player.isJumping)) {
     player.velocity.x = 10;
   } else {
     player.velocity.x = (parseInt(player.velocity.x) == 0 ? 0 : player.velocity.x * .5);
   }
-  if (window.config.keys["w"].pressed) {
-    // player.hasGravity = false;
+  if (config.keys["w"].pressed) {
     player.velocity.y = -10;
-  } else if (window.config.keys["s"].pressed) {
-    player.hasGravity = false;
+    player.isJumping = true;
+  } else if (config.keys["s"].pressed) {
     player.velocity.y = 10;
   } else {
-    player.hasGravity = true;
-    // player.velocity.y = 0;
+    player.isJumping = false;
   }
   player.update();
-  player_collider.update();
-  enemy.update();
+  // player_collider.update();
+  // enemy.update();
 }
 
 animate();

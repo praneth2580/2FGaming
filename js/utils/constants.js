@@ -21,4 +21,4 @@ const config = {
     }
 }
 
-window.config = config;
+var current_frame = 0;
