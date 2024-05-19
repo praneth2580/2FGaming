@@ -1,6 +1,6 @@
 class Player {
-  constructor(context, position, velocity) {
-    this.context = context;
+  constructor(ctx, position, velocity) {
+    this.ctx = ctx;
     this.position = position;
     this.size = {
       width: 50,
@@ -12,23 +12,23 @@ class Player {
 
   checkGrounded() {
     this.isGrounded =
-      this.position.y + this.size.height >= config.canvas_height;
+      this.position.y + this.size.height + this.velocity.y > config.canvas_height;
   }
 
   draw() {
-    this.context.fillStyle = "red";
-    this.context.fillRect(
+    this.ctx.fillStyle = "red";
+    this.ctx.fillRect(
       this.position.x,
       this.position.y,
       this.size.width,
       this.size.height
     );
-    this.context.beginPath();
-    this.context.moveTo(this.position.x, (this.position.y + this.size.height) - 5);
-    this.context.lineTo(this.position.x + this.size.width, (this.position.y + this.size.height) - 5);
-    this.context.strokeStyle = 'blue';
-    this.context.lineWidth = 10;
-    this.context.stroke();
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.position.x, (this.position.y + this.size.height) - 5);
+    this.ctx.lineTo(this.position.x + this.size.width, (this.position.y + this.size.height) - 5);
+    this.ctx.strokeStyle = 'blue';
+    this.ctx.lineWidth = 10;
+    this.ctx.stroke();
   }
 
   update() {

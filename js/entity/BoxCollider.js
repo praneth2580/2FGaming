@@ -1,6 +1,6 @@
 class BoxCollider {
-  constructor(context, width, height) {
-    this.context = context;
+  constructor(ctx, width, height) {
+    this.ctx = ctx;
     this.size = {
       width,
       height,
@@ -17,9 +17,9 @@ class BoxCollider {
   }
 
   draw() {
-    this.context.strokeStyle = "green";
-    this.context.lineWidth = 2;
-    this.context.strokeRect(
+    this.ctx.strokeStyle = "green";
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeRect(
       this.position.x,
       this.position.y,
       this.size.width,

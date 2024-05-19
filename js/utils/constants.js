@@ -1,7 +1,7 @@
 const config = {
-    gravity: 2.8,
+    gravity: .5,
     canvas_width: 1024,
-    canvas_height: 576,
+    canvas_height: 384,
     keys : {
         "a": {
             pressed: false
